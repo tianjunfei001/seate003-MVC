@@ -46,5 +46,50 @@ namespace PH7.ERP.Smart.MVC.Controllers
             int c = 2;
             return View();
         }
+
+        /// <summary>
+        /// 接诊台，接诊管理;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+        /// </summary>
+        /// <returns></returns>
+        //接诊台默认未接诊
+        public IActionResult Patient_Administration()
+        {
+            return View();
+        }
+
+        //未接诊页点击接诊
+        public IActionResult Patient_Treat()
+        {
+            return View();
+        }
+        //患者诊断 已接诊
+        public IActionResult Patient_Adminyes()
+        {
+            return View();
+        }
+
+        //患者信息 诊断管理
+        public IActionResult Patient_Diagnostic()
+        {
+            return View();
+        }
+
+        //诊断列表
+        public IActionResult Patient_Dialist()
+        {
+            return View();
+        }
+
+        //诊断报告反填
+        public IActionResult Patient_Backfill()
+        {
+            return View();
+        }
+
+        //评价
+        public IActionResult Patient_Gdnum()
+        {
+            return View();
+        }
     }
 }

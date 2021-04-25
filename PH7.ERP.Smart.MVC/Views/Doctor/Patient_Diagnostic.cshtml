@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "Patient_Diagnostic";
+    Layout = "~/Views/Shared/Doctor_Layout.cshtml";
+}
+
+<div>
+    @*数据表格的重载*@
+<div class="demoTable" style="margin-left: 1400px; margin-top:20px;">
+    <div class="layui-inline">
+        <input placeholder="输入患者" class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+
+@*诊断管理列表*@
+<div style="margin-left: 0px;">
+    <table id="demo" lay-filter="test"></table>
+</div>
+</div>
+
+
+<script type="text/html" id="barDemo">
+    <a href="#" class="layui-btn layui-btn-xs" lay-event="cha">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="detail">评价</a>
+</script>
+
+<script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //第一个实例
+            hd = table.render({
+                elem: '#demo'
+                , height: 312
+                , url: 'http://localhost:49721/api/DoctorLog/Getzd' //数据接口
+                , page: true //开启分页
+                , cols: [[ //表头
+                    { field: 'tim', title: '日期', align: 'center' }
+                    , { field: 'total', title: '总金额', align: 'center' }
+                    , { field: 'patients', title: '患者数量', align: 'center' }
+                    , { fixed: 'right', wtitle: '操作',idth: 150, align: 'center', toolbar: '#barDemo' }
+
+                ]]
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'detail') {
+                    layer.open({
+                        type: 2 //此处以iframe举例
+                        , title: '评价'
+                        , area: ['500px', '350px']
+                        , shade: 0
+                        , maxmin: true
+                        , content: '/Patient/Patient_Backfill?id=' + data.id
+                        , btn: ['返回'] //只是为了演示
+
+                    });
+                } else if (layEvent === 'cha') {
+                    console.log(data);
+
+                    location.href = '/Doctor/Patient_Dialist?tim=' + data.tim;
+                }
+            });
+
+
+            //数据表格的重载
+            var $ = layui.$, active = {
+                reload: function () {
+                    var demoReload = $('#demoReload');
+
+                    //执行重载
+                    hd.reload({
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            name: $("#demoReload").val()
+                        }
+                    });
+                }
+            };
+
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+        });
+</script>
