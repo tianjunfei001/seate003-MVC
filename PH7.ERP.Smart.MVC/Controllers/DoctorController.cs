@@ -42,6 +42,8 @@ namespace PH7.ERP.Smart.MVC.Controllers
         //测试医生端
         public IActionResult CeiYisheng()
         {
+            int a = 1;
+            int c = 2;
             return View();
         }
     }
