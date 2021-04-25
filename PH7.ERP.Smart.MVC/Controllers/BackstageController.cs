@@ -13,7 +13,18 @@ namespace PH7.ERP.Smart.MVC.Controllers
         {
             return View();
         }
-        public IActionResult show()
+        //账号医生管理
+        public IActionResult Account()
+        {
+            return View();
+        }
+        //账号医生管理添加
+        public IActionResult Add()
+        {
+            return View();
+        }
+        //账号患者管理
+        public IActionResult Patient()
         {
             return View();
         }
