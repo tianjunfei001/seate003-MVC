@@ -1,0 +1,66 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <title>登录页</title>
+    <link href="~/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="left">
+            <div class="header">
+                <h2 class="animation a1">欢迎回来</h2>
+                <h4 class="animation a2">使用账号及密码登入你的帐户</h4>
+            </div>
+            <div class="form">
+                <input id="txtname" type="text" class="form-field animation a3" placeholder="账号">
+                <input id="txtpass" type="password" class="form-field animation a4" placeholder="密码">
+                <p class="animation a2"><a href="/Doctor/DoctorZhuciShow">没有用户，注册用户？</a></p>
+                <button onclick="Log()" class="animation a6">登录</button>
+            </div>
+        </div>
+        <div class="right"></div>
+    </div>
+</body>
+</html>
+<script>
+    function Log() {
+        var data = {};
+        data.userName = $("#txtname").val();
+        data._password = $("#txtpass").val();
+        if (data.userName.length < 0 || data._password.length < 0) {
+            alert("不能为空");
+        }
+        $.ajax({
+            url: 'http://localhost:49721/api/DoctorLog/GetDoctLog',
+            type: 'post',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType:'application/json',
+            success: function (d) {
+                console.log(d);
+                if (d.seate>=1) {
+                    alert("登录成功");
+                    //location.href = '/Usere/Index';
+                }
+                else {
+                    alert("登录失败");
+                }
+
+
+            }
+        })
+    }
+</script>
+
+

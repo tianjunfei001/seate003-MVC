@@ -1,0 +1,93 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script src="~/layui/layui.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <style>
+        hr {
+            height: 4px;
+            background: #1e9fff;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="layui-layout layui-layout-admin">
+        @*表头*@
+        <div class="layui-header layui-bg-blue">
+            <div class="layui-logo"><a href="" style="font-size:25px;color:white">智慧医疗后台管理</a></div>
+
+        </div>
+
+
+
+
+
+        <div class="layui-side layui-bg-black">
+
+            <div class="layui-side-scroll">
+
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree layui-nav-tree layui-nav-side" lay-filter="test" style="margin-top: 80px;">
+
+                    <li class="layui-nav-item">
+                        <img src="/img/u=1897891542,975841375&fm=26&gp=0.jpg" class="layui-nav-img" style="margin: 50px 50px 50px 50px;        width: 100px;height: 100px;">
+                    </li>
+                    <li class="layui-nav-item" style="margin-bottom: 20px;">
+                        <span style="font-size:25px;margin-left: 50px;">管理员</span>
+                    </li>
+                    <li class="layui-nav-item" style="margin-left: 40px;">
+                        <a href="#">医生管理</a>
+                    </li>
+                    <li class="layui-nav-item" style="margin-left: 40px;">
+                        <a href="#">患者管理</a>
+                    </li>
+                    <li class="layui-nav-item" style="margin-left: 40px;">
+                        <a href="#">审核管理</a>
+                    </li>
+                    <li class="layui-nav-item" style="margin-left: 40px;">
+                        <a href="#">商品管理</a>
+                    </li>
+                    <li class="layui-nav-item" style="margin-left: 40px;">
+                        <a href="#">直播管理</a>
+                    </li>
+                    <li class="layui-nav-item" style="margin-left: 40px;">
+                        <a href="#">营销管理</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="#" style="margin-left: 40px;">账号管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <p style="margin-top:10px; font-size:15px;">@ViewBag.sizeTitle</p>      
+            <hr />
+            <div style="padding: 15px;">
+                @RenderBody()
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            底部固定区域
+        </div>
+    </div>
+
+    @*<script src="./layui/layui.js"></script>*@
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+
+        });
+    </script>
+</body>
+</html>

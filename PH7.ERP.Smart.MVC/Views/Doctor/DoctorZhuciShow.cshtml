@@ -1,0 +1,115 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <title>注册页面</title>
+    <link href="~/css/style.css" rel="stylesheet" />
+    
+    <style>
+        .tian {
+            padding: 12px 10px;
+            border: 0;
+            background: linear-gradient(to right, #6cb1d7 0%, #61b8d9 100%);
+            border-radius: 3px;
+            margin-top: 10px;
+            color: #fff;
+            letter-spacing: 1px;
+            font-family: 'Rubik', sans-serif;
+            cursor: pointer;
+            width: 95px;
+            margin-left: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="left">
+            <div class="header">
+                <h2 class="animation a1">欢迎注册用户！</h2>
+                <h4 class="animation a2">使用账号及密码注册你的帐户</h4>
+            </div>
+            <div class="form">
+                <input id="userName" type="text" class="form-field animation a3" placeholder="账号">
+                <input id="_password" type="password" class="form-field animation a4" placeholder="密码">
+                <input id="cellPhone" type="text" class="form-field animation a3" placeholder="手机号">
+                <div>
+                    <input id="yan" type="text" class="form-field animation a4" placeholder="验证码"><button class="tian" onclick="yan()">发送验证码</button>
+                </div>
+                
+                <p class="animation a2"><a href="/Doctor/DoctorLogShow">已有用户，登录？</a></p>
+                <input type="hidden" id="hdyan" name="name" value="" />
+                <button onclick="zhu()" class="animation a6">提交</button>
+            </div>
+        </div>
+        <div class="right"></div>
+    </div>
+</body>
+</html>
+<script>
+    function zhu() {
+        var data = {};
+        data.userName = $("#userName").val();
+        data._password = $("#_password").val();
+        data.cellPhone = $("#cellPhone").val();
+        data.yan = $("#yan").val();
+        var yan = $("#hdyan").val();
+        console.log(yan);
+        if (data.userName.length <= 0 || data._password.length <= 0 || data.cellPhone.length<=0) {
+            alert("不能为空");
+            return;
+        }
+        if (data.yan.length<=0) {
+            alert("请输入验证码！！！");
+            return;
+        }
+        if (data.yan != yan) {
+            alert("验证码不正确！！");
+            return;
+        }
+        console.log(data);
+        $.ajax({
+            url: 'http://localhost:49721/api/DoctorLog/GetDoctLog_Zhuci',
+            type: 'post',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType:"json",
+            success: function (d) {
+                if (d.seate >= 1) {
+                    alert("注册成功");
+                    //location.href = '/Usere/Index';
+                }
+                else {
+                    alert("注册失败");
+                }
+            }
+        })
+    }
+
+    function yan() {
+        var cellPhone = $("#cellPhone").val();
+        $.ajax({
+            url: "http://localhost:49721/api/DoctorLog/GetYan?tel=" + cellPhone,
+            //data: { '':cellPhone},
+            //dataType:"json",
+            //contentType: "application/json",
+            type: "get",
+            success: function (res) {
+                console.log(res);
+                $("#hdyan").val(res.yan);
+            }
+
+        })
+    }
+</script>
+
+
