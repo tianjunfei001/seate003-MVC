@@ -13,5 +13,9 @@ namespace PH7.ERP.Smart.MVC.Controllers
         {
             return View();
         }
+        public IActionResult show()
+        {
+            return View();
+        }
     }
 }
