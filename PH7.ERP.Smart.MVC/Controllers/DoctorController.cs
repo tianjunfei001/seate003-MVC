@@ -43,6 +43,7 @@ namespace PH7.ERP.Smart.MVC.Controllers
         public IActionResult CeiYisheng()
         {
             int a = 1;
+            int c = 2;
             return View();
         }
     }
