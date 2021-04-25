@@ -1,0 +1,394 @@
+﻿
+@{
+    ViewData["Title"] = "Platform";
+    ViewData["sizeTitle"] = "小标题可以更改！";
+    ViewData["name"] = "姓名可更改！";
+
+    Layout = "~/Views/Shared/Doctor_Layout.cshtml";
+}
+
+<h1>Platform</h1>
+
+<div id="app">
+    <div style="padding: 15px;">
+        @*<style>
+            .ju {
+                text-align: center;
+            }
+        </style>*@
+        <div id="app">
+            <template>
+                <template>
+                    <el-button @@click="JieZhen"> 未接诊(20)</el-button>
+                    <el-button @@click="JieZhen"> 已接诊(20)</el-button>
+                    <el-radio v-model="radio" label="1"> 开启问诊</el-radio>
+                    <el-radio v-model="radio" label="2"> 关闭问诊</el-radio>
+                </template>
+
+                <template>
+                    <el-row :gutter="12">
+                        <el-col :span="7"> <div class="grid-content bg-purple"> <el-input v-model="input" placeholder="请输入患者或手机号"> </el-input> </div> </el-col>
+                        <el-col :span="5"> <div class="grid-content bg-purple"> <el-button type="primary" @@click="Initda" icon="el-icon-search"> 搜索</el-button> </div> </el-col>
+                    </el-row>
+
+
+                </template>
+
+
+
+
+                <template>
+                    <el-table :data="tableData"
+                              style="width: 100%">
+                        <el-table-column prop="id"
+                                         label="序号"
+                                         width="180">
+                        </el-table-column>
+                        <el-table-column prop="createtime"
+                                         label="日期"
+                                         width="180">
+                        </el-table-column>
+                        <el-table-column prop="_money"
+                                         label="金额"
+                                         width="180">
+                        </el-table-column>
+                        <el-table-column prop="name"
+                                         label="患者姓名"
+                                         width="180">
+                        </el-table-column>
+                        <el-table-column prop="describe"
+                                         label="病情描述"
+                                         width="180">
+                        </el-table-column>
+                        <el-table-column prop="age"
+                                         label="年龄"
+                                         width="180">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <div v-if="Pan" slot-scope="scope">
+                                <el-popover placement="right" @*---*@
+                                            width="600"
+                                            trigger="click">
+                                    <div>
+                                        {{scope.row.createtime}}
+                                    </div>
+                                    <hr />
+                                    <div>
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 患者姓名:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                  {{scope.row.name}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 年龄:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.age}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 身高:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.height}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 体重:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row._weight}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 肾功能:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.kidney}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 婚姻状况:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.marriage}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 生育状况:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.birth}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 疾病史:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row._case}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 肝功能:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.liver_function}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <hr />
+                                        <div class="ju"> 病情描述</div>
+                                        <br />
+                                        <div>
+                                            {{scope.row.describe}}
+                                        </div>
+                                        <hr />
+                                        <div class="ju"> 诊断</div>
+                                        <br />
+                                        <div>
+                                            {{scope.row.diagnosis}}
+                                        </div>
+                                        <hr />
+                                    </div>
+
+                                    <el-button slot="reference"> 诊断报告</el-button>
+                                </el-popover> @*---*@
+                                <el-popover placement="right"
+                                            width="600"
+                                            trigger="click">
+                                    <el-table :data="gridData">
+                                        <el-table-column width="150" label="日期">
+                                            {{scope.row.createtime}}
+                                        </el-table-column>
+                                        <el-table-column width="150" property="name" label="姓名"> </el-table-column>
+                                        <el-table-column width="150" property="address" label="地址"> </el-table-column>
+                                        <el-table-column width="150" property="" label="评价">
+                                            <el-rate v-model="value"
+                                                     disabled
+                                                     show-score
+                                                     text-color="#ff9900"
+                                                     score-template="{value}">
+                                            </el-rate>
+                                        </el-table-column>
+                                    </el-table>
+                                    <el-button slot="reference"> 评价</el-button>
+                                </el-popover>
+                            </div>
+                            @*//-----------------------------------------------------------------------*@
+                            <div v-else slot-scope="scope">
+
+                                <el-popover placement="right"
+                                            width="600"
+                                            trigger="click">
+                                    <el-table :data="gridData">
+                                        <el-table-column width="150" property="date" label="日期"> </el-table-column>
+                                        <el-table-column width="150" property="name" label="姓名"> </el-table-column>
+                                        <el-table-column width="150" property="address" label="地址"> </el-table-column>
+                                        <el-table-column width="150" property="" label="评价">
+                                            <el-rate v-model="value"
+                                                     disabled
+                                                     show-score
+                                                     text-color="#ff9900"
+                                                     score-template="{value}">
+                                            </el-rate>
+                                        </el-table-column>
+                                    </el-table>
+                                    <el-button slot="reference"> 接诊</el-button>
+                                </el-popover>
+                                <el-popover placement="right"
+                                            width="600"
+                                            trigger="click">
+                                    <div>
+                                        {{scope.row.createtime}}
+                                    </div>
+                                    <hr />
+                                    <div>
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 患者姓名:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.name}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 年龄:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.age}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 身高:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.height}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 体重:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row._weight}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 肾功能:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.kidney}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 婚姻状况:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.marriage}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 生育状况:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.birth}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 疾病史:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row._case}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <br />
+                                        <el-row :gutter="12">
+                                            <el-col :span="8"> <div class="grid-content bg-purple"> 肝功能:</div> </el-col>
+                                            <el-col :span="4">
+                                                <div class="grid-content bg-purple">
+                                                    {{scope.row.liver_function}}
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                    </div>
+
+                                    <el-button slot="reference">健康档案</el-button>
+                                </el-popover>
+                            </div>
+
+                        </el-table-column>
+                    </el-table>
+                </template>
+                <el-pagination @@size-change="handleSizeChange"
+                               @@current-change="handleCurrentChange"
+                               :current-page="pageindex"
+                               :page-sizes="[1, 2, 3, 4]"
+                               :page-size="pagesize"
+                               layout="total, sizes, prev, pager, next, jumper"
+                               :total="count">
+                </el-pagination>
+            </template>
+            @*//------------------------------------------------------------*@
+
+            @*<div v-for="item in ren" > {
+
+                {
+                    item .name
+                }
+
+                }
+                </div > *@
+        </div>
+    </div>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: [],
+            radio: '1',     //单选
+            input: '',       //查询输入框
+            ren: [],
+            pageindex: 1,
+            pagesize: 3,
+            gridData: {},
+            count: 7,
+            value: 3,
+            name: '',
+            id: '',
+            Pan: true,
+        },
+        methods: {
+            Initda: function () {
+                axios.get("http://localhost:49721/api/DoctorLog/GetPlatform?pageindex=" + this.pageindex + "&pagesize=" + this.pagesize + "&State=" + this.id + "&Sname=" + this.input).then(res => {
+                    console.log(res);
+                    this.ren = res.data.data;
+                    this.tableData = res.data.data;
+
+                    this.gridData = res.data.data; //弹框
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+                this.pagesize = val;
+                this.Initda();
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+                this.pageindex = val;
+                this.Initda();
+            },
+            JieZhen(row) {
+                console.log(row);
+                console.log(row.path[0].innerHTML);
+                if (row.path[0].innerText == "未接诊(20)") {                 
+                    this.id = 1;
+                    this.Initda();
+                    this.Pan = false;
+
+                } else {
+                    this.id = 0;
+                    this.Initda();  //--已接诊
+                    this.Pan = true;
+                }
+            },
+        },
+        mounted() {
+            this.Initda();
+        },
+    })
+
+</script>
