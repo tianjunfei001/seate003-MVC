@@ -65,11 +65,6 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
-        //未接诊页点击接诊
-        public IActionResult Patient_Treat()
-        {
-            return View();
-        }
         //患者诊断 已接诊
         public IActionResult Patient_Adminyes()
         {
@@ -95,7 +90,19 @@ namespace PH7.ERP.Smart.MVC.Controllers
         }
 
         //评价
-        public IActionResult Patient_Gdnum()
+        public IActionResult Patient_Acclaim()
+        {
+            return View();
+        }
+
+        //评价多表
+        public IActionResult Patient_Acclaimss()    
+        {
+            return View();
+        }
+
+        //接诊改
+         public IActionResult Patient_Treat()    
         {
             return View();
         }

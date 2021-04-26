@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Patient_Backfill</title>
+    <title>Patient_Treat</title>
 
     <script src="~/vue/vue.js"></script>
     <script src="~/vue/axios.min.js"></script>
@@ -23,55 +23,31 @@
                 </td>
             </tr>
             <tr>
-                <td>患者姓名</td>
+                <td>患者姓名:</td>
                 <td>
                     <span>{{list.name}}</span>
                 </td>
             </tr>
             <tr>
-                <td>年龄</td>
+                <td>年龄:</td>
                 <td><span>{{list.age}}</span></td>
             </tr>
             <tr>
-                <td>性别</td>
+                <td>性别:</td>
                 <td><span>{{list.sex}}</span></td>
             </tr>
             <tr>
-                <td>身高</td>
-                <td><span>{{list.height}}cm</span></td>
-            </tr>
-            <tr>
-                <td>体重</td>
-                <td><span>{{list._weight}}公斤</span></td>
-            </tr>
-            <tr>
-                <td>病情描述</td>
+                <td>病情描述:</td>
                 <td><span>{{list.describe}}</span></td>
             </tr>
             <tr>
-                <td>肾功能</td>
-                <td><span>{{list.kidney}}</span></td>
+                <td>诊断结果:</td>
+                <td><input type="text" /></td>
             </tr>
             <tr>
-                <td>婚姻状况</td>
-                <td><span>{{list.marriage}}</span></td>
-            </tr>
-            <tr>
-                <td>生育状况</td>
-                <td><span>{{list.birth}}</span></td>
-            </tr>
-            <tr>
-                <td>疾病史</td>
-                <td><span>{{list._case}}</span></td>
-            </tr>
-            <tr>
-                <td>肝功能</td>
-                <td><span>{{list.liver_function}}</span></td>
-            </tr>
-            @*<tr>
                     <td></td>
-                    <td><input type="button" value="生成判断" /></td>
-                </tr>*@
+                    <td><input type="button"  value="生成判断" v-on:click="GetUpdrn" /></td>
+            </tr>
         </table>
     </div>
 </body>
@@ -107,7 +83,17 @@
                 ))
 
                 .catch(error => { console.log(error); })
+        },
+        methods: {
+            GetUpdrn: function () {
+                axios
+                    .post('http://localhost:49721/api/DoctorLog/GetUpdrn?id=' + id)
+                    .then(msg => {
+                        console.log(msg)
+                    })
+                    .catch(error => { console.log(error)})
+            }
         }
+
     })
 </script>
-
