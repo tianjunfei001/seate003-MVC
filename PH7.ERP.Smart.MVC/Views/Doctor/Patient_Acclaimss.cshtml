@@ -1,0 +1,102 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Patient_Acclaimss</title>
+
+    <script src="~/vue/vue.js"></script>
+    <script src="~/vue/axios.min.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.js"></script>
+</head>
+<body>
+    <div>
+        @*数据表格的重载*@
+        <div class="demoTable" style="margin-left: 1400px; margin-top:20px;">
+
+        </div>
+
+        @*诊断管理列表*@
+        <div style="margin-left: 0px;">
+            <table id="demo" lay-filter="test"></table>
+        </div>
+    </div>
+
+    <script type="text/html" id="barDemo">
+        <div id="test1" lay-event="xing"></div>   
+    </script>
+
+    <script>
+
+        var sickdate = location.href.split('=')[1];
+
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //第一个实例
+            hd = table.render({
+                elem: '#demo'
+                , height: 312
+                , url: 'http://localhost:49721/api/DoctorLog/GetAlist?sickdate=' + sickdate //数据接口
+                , page: true //开启分页
+                , cols: [[ //表头
+                    { field: 'id', title: 'ID', fixed: 'left', align: 'center' }
+                    , { field: 'createtime', title: '日期', align: 'center' }
+                    , { field: 'name', title: '患者姓名', align: 'center' }
+                    , { field: 'describe', title: '病情描述', align: 'center' }
+                    , { field: 'evaluate', title: '评价', align: 'center' }
+                    //, { fixed: 'evaluate', wtitle: '星评', idth: 150, align: 'center', toolbar: '#barDemo' }
+
+                ]], value: 'evaluate'
+                , readonly: true
+            });
+
+
+
+            //监听行工具事件
+            table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'xing') {
+                    rate.render({
+                        elem: '#test1'
+                        , value: data.evaluate
+                        , theme: '#FF8000' //自定义主题色
+                    });
+                } 
+            });
+
+
+            //数据表格的重载
+            var $ = layui.$, active = {
+                reload: function () {
+                    var demoReload = $('#demoReload');
+
+                    //执行重载
+                    hd.reload({
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            name: $("#demoReload").val()
+                        }
+                    });
+                }
+            };
+
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+        });
+    </script>
+</body>
+</html>
