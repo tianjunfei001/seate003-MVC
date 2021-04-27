@@ -1,0 +1,112 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Audit_managementpop</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+
+    <style>
+        tr {
+
+            height:50px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <table style="margin-left:120px;">
+        <tr>
+            <td>医师姓名:<span id="name"></span></td>
+            <td>联系电话:<span id="tel"></span></td>
+        </tr>
+        <tr>
+            <td>隶属医院:<span id="li"></span></td>
+            <td>身份证号:<span id="shen"></span></td>
+        </tr>
+        <tr>
+            <td>医师等级:<span id="yi"></span></td>
+        </tr>
+        <tr>
+            <td>身份证正面上传</td>
+            <td>医师执业证书上传</td>
+            <td>医师资格证书上传</td>
+        </tr>
+        <tr>
+            <td id="img1">
+                <img src="~/images/photo.jpg" style="width:200px;height:100px;" />
+            </td>
+            <td id="img2">
+                <img src="~/images/photo.jpg" style="width:200px;height:100px;" />
+            </td>
+            <td id="img3">
+                <img src="~/images/photo.jpg" style="width:200px;height:100px;" />
+            </td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td>
+                <span style="color:green">审核状态:已通过</span>
+            </td>
+        </tr>
+    </table>
+    <div style="width:1000px;height:50px;">
+        <input style=" margin-left: 350px; width: 100px;" class="layui-btn layui-btn-normal" type="button" onclick="upt()" value="关闭" />
+    </div>
+
+</body>
+</html>
+
+
+<script>
+
+    var id = localStorage.getItem("state1");
+    console.log(id);
+
+    $(function () {
+
+        fan();
+    });
+
+    function fan() {
+        $.ajax({
+            url: 'http://localhost:49721/api/Backstage/GetDoct_Fan_relationList?id='+ id,
+            type: 'get',
+            success: function (d) {
+                console.log(d);
+                console.log(d.data);
+                console.log(d.data[0].userName);
+
+
+                $("#name").text(d.data[0].userName);
+                $("#tel").text(d.data[0].cellPhone);
+                $("#li").text(d.data[0].hospital_Id);
+                $("#shen").text(d.data[0]._weight);
+                $("#yi").text(d.data[0].gradeName);
+                $("#img1").text(d.data[0].kidney);
+                $("#img2").text(d.data[0].kidney);
+                $("#img3").text(d.data[0].kidney);
+
+                //$("#nmae").text(createtime);
+            }
+        })
+
+    }
+
+
+    function upt() {
+
+        window.parent.location.reload();
+    }
+
+
+</script>

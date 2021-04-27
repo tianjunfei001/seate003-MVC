@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewData["Title"] = "Refer";
+    ViewData["sizeTitle"] = "审核管理";
+    Layout = "~/Views/Shared/backstage_Layout.cshtml";
+}
+
+
+<div>
+    @*选项卡*@
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li onclick="location.href='/Backstage/Audit_management'">待审批</li>
+            <li onclick="location.href='/Backstage/Approved'">通过</li>
+            <li class="layui-this" onclick="location.href='/Backstage/Refer'">未通过</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+            </div>
+            <div class="layui-tab-item"></div>
+            <div class="layui-tab-item"></div>
+        </div>
+    </div>
+
+    @*数据表格的重载*@
+    <div class="demoTable" style="margin-left:700px;">
+        隶属医院:
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+        </div>
+        从业年限:
+        <div class="layui-inline">
+            <input class="layui-input" name="id1" id="demoReloads" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+</div>
+
+
+
+@*医院列表*@
+<div>
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    @*<a class="layui-btn layui-btn-xs" lay-event="detail">审核</a>*@
+
+    <button class="layui-btn layui-btn-normal" lay-event="detail" onclick="shen()">查看</button>
+</script>
+
+<script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //第一个实例
+            hd = table.render({
+                elem: '#demo'
+                , height: 312
+                , url: 'http://localhost:49721/api/Backstage/GetDoct_State_relationList?state=2&page=1&limit=2&hospital_Id=-1&Department_Id=-1&Grade_Id=-1&Years=-1' //数据接口
+                , page: true //开启分页
+                , cols: [[ //表头
+                    { field: 'id', title: 'ID', fixed: 'left', align: 'center' }
+                    , { field: 'userName', title: '医师姓名', align: 'center' }
+                    , { field: 'hospital_Id', title: '隶属医院', align: 'center' }
+                    , { field: 'gradeName', title: '医师等级', align: 'center' }
+                    , { field: 'age', title: '年限', align: 'center' }
+                    , { field: '_certificate', title: '医师资格证书', align: 'center' }
+                    , { field: '_certificate', title: '医师执业证书', align: 'center' }
+                    , { field: '_certificate', title: '身份证', align: 'center' }
+                    , { fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo' }
+
+                ]]
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'detail') {
+                    var id = obj.data.id;
+                    localStorage.setItem("state2", id);
+
+                }
+            });
+
+
+            //数据表格的重载
+            var $ = layui.$, active = {
+                reload: function () {
+                    var demoReload = $('#demoReload');
+                    console.log(demoReload);
+                    //执行重载
+                    hd.reload({
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            name: $("#demoReload").val(),
+                            age: $("#demoReloads").val()
+                        }
+                    });
+                }
+            };
+
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+
+        });
+
+
+        function shen() {
+            layer.open({
+                type: 2,
+                area: ["800px", "600px"],
+                content: '/Backstage/Referpop' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+            });
+        }
+
+</script>
+

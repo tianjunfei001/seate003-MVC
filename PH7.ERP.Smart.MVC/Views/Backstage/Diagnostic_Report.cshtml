@@ -1,0 +1,130 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Diagnostic_Report</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+
+    <style>
+        tr {
+            height: 50px;
+        }
+    </style>
+
+</head>
+<body>
+    <div style="height:30px;width:1500px;background-color:deepskyblue">
+        <span style="align-content:center;margin-left:220px;">诊断报告</span>
+    </div>
+
+
+    <hr />
+
+    <table style="margin-left:220px;">
+        <tr>
+            <td>患者姓名:</td>
+            <td><span id="name"></span></td>
+        </tr>
+        <tr>
+            <td>年龄:</td>
+            <td><span id="age"></span></td>
+        </tr>
+        <tr>
+            <td>身高:</td>
+            <td><span id="hel"></span></td>
+        </tr>
+        <tr>
+            <td>体重:</td>
+            <td><span id="wih"></span></td>
+        </tr>
+        <tr>
+            <td>肾功能:</td>
+            <td><span id="shen"></span></td>
+        </tr>
+        <tr>
+            <td>婚姻状况:</td>
+            <td><span id="hun"></span></td>
+        </tr>
+        <tr>
+            <td>生育状况:</td>
+            <td><span id="sheng"></span></td>
+        </tr>
+        <tr>
+            <td>疾病史:</td>
+            <td><span id="ji"></span></td>
+        </tr>
+        <tr>
+            <td>肝功能:</td>
+            <td><span id="gan"></span></td>
+        </tr>
+
+
+        <tr>
+            <td>病情描述:</td>
+            <td><span id="bing"></span></td>
+        </tr>
+
+
+        <tr>
+            <td>诊断:</td>
+            <td><span id="zhen"></span></td>
+        </tr>
+    </table>
+
+    <div style="width:1000px;height:50px;">
+        <input style=" margin-left: 220px; width: 100px; margin-top: 40px;" class="layui-btn layui-btn-normal" type="button" onclick="upt()" value="关闭" />
+    </div>
+
+
+    <script>
+
+        var id = localStorage.getItem("Report");
+        console.log(id);
+
+        $(function () {
+
+            fan();
+        });
+
+        function fan() {
+            $.ajax({
+                url: 'http://localhost:49721/api/Backstage/GetPati_DiagnosisList?Disease_records_id=' + id,
+                type: 'get',
+                success: function (d) {
+                    console.log(d);
+                    console.log(d.data);
+                    console.log(d.data[0].name);
+
+
+                    $("#nmae").text(d.data[0].name);
+                    $("#age").text(d.data[0].age);
+                    $("#hel").text(d.data[0].height);
+                    $("#wih").text(d.data[0]._weight);
+                    $("#shen").text(d.data[0].kidney);
+                    $("#hun").text(d.data[0].marriage);
+                    $("#sheng").text(d.data[0].birth);
+                    $("#ji").text(d.data[0]._case);
+                    $("#gan").text(d.data[0].liver_function);
+                    $("#bing").text(d.data[0].describe);
+                    $("#zhen").text(d.data[0].diagnosis);
+                    //$("#nmae").text(createtime);
+
+                }
+            })
+
+        }
+
+        function upt() {
+            window.parent.location.reload();
+        }
+
+    </script>
+</body>
+</html>

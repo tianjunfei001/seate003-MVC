@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "Patient_information";
+    ViewData["sizeTitle"] = "患者信息";
+    Layout = "~/Views/Shared/backstage_Layout.cshtml";
+}
+
+
+@*数据表格的重载*@
+<div class="demoTable" style="margin-left: 900px;">
+    搜索名字：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+
+@*医院列表*@
+<div>
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    @*<a lay-event="detail" onclick="shen()">诊断报告</a>*@
+
+    <button class="layui-btn layui-btn-normal" lay-event="detail" onclick="shen()">诊断报告</button>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">诊断报告</a>
+
+</script>
+
+<script>
+
+    var id = localStorage.getItem("Patient_id");
+
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //第一个实例
+        hd = table.render({
+            elem: '#demo'
+            , height: 312
+            , url: 'http://localhost:49721/api/Backstage/GetDisease_recordsList?page=1&limit=2&patient_Id=' + id //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                { field: 'id', title: 'ID', fixed: 'left', align: 'center' }
+                , { field: 'createtime', title: '问诊日期', align: 'center' }
+                , { field: 'name', title: '姓名', align: 'center' }
+                , { field: 'age', title: '年龄', align: 'center' }
+                , { field: '_money', title: '支付问诊金额', align: 'center' }
+                , { field: 'describe', title: '病情', align: 'center' }
+                , { field: 'name', title: '问诊医师姓名', align: 'center' }
+                , { field: 'grade_Name', title: '问诊医师等级', align: 'center' }
+                , { field: 'hospitalName', title: '问诊医师隶属医院', align: 'center' }
+                , { fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo' }
+
+            ]]
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'detail') {
+                var id = obj.data.id;
+
+                localStorage.setItem('Report', id);
+            }
+        });
+
+
+        //数据表格的重载
+        var $ = layui.$, active = {
+            reload: function () {
+                var demoReload = $('#demoReload');
+
+                //执行重载
+                hd.reload({
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        name: $("#demoReload").val()
+                    }
+                });
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+
+    function shen() {
+        layer.open({
+            type: 2,
+            area: ["800px", "600px"],
+            content: '/Backstage/Diagnostic_Report' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+        });
+    }
+
+
+</script>
+

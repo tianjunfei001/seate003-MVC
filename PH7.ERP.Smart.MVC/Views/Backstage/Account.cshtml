@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewData["Title"] = "show";
+    Layout = "~/Views/Shared/backstage_Layout.cshtml";
+}
+@*数据表格的重载*@
+<div class="layui-tab" >
+    <ul class="layui-tab-title">
+        <li class="layui-this" style="color:cornflowerblue"><a href="/backstage/account">医生</a></li>
+        <li ><a href="/backstage/patient">患者</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+        </div>
+        <div class="layui-tab-item">
+
+        </div>
+    </div>
+</div>
+<div >
+    <div >
+        <button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" onclick="add()">添加医生</button>
+        @*<button data-method="offset" data-type="auto" class="layui-btn layui-btn-normal">居中弹出</button>*@
+    </div>
+    <div class="demoTable"style="margin-left: 980px; margin-top:-29px;">
+
+        <div class="layui-inline">
+            <input class="layui-input" placeholder="请输入要搜索的姓名/手机号" name="id" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+
+    </div>
+</div>
+@*医院列表*@
+<div>
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="del">删除</a>
+
+</script>
+
+<script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //第一个实例
+            hd = table.render({
+                elem: '#demo'
+                , height: 312
+                , url: 'http://localhost:49721/api/Backstage/GetShowDoctorList' //数据接口
+                , page: true //开启分页
+                ,limit:3
+                , cols: [[ //表头
+                    { field: 'id', title: '序号', fixed: 'left', align: 'center' }
+                    , { field: 'id', title: 'ID', align: 'center' }
+                    , { field: 'userName', title: '医师姓名', align: 'center' }
+                    , { field: 'hospitalName', title: '隶属医院', align: 'center' }
+                    , { field: 'grade_name', title: '医师等级', align: 'center' }
+                    , { field: 'cellPhone', title: '手机号', align: 'center' }
+                    , { field: '_password', title: '密码', align: 'center' }
+                    , { fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#barDemo' }
+
+                ]]
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+
+                        //obj.del();
+                        
+                        $.ajax({
+                            url: 'http://localhost:49721/api/Backstage/GetDelDoctor?id='+data.id,
+                            type: 'get',
+                
+                            success: function (d) {
+                                console.log(d);
+                                if (d.msg > 0) {
+                                    alert('删除成功！');
+                                    window.parent.location.reload();
+                                }
+                            }
+                        })
+
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {                   
+                        layer.open({
+                            type: 2,
+                            area: ['800px', '600px'],
+                            content: '/backstage/add?id=' + data.id
+                        });
+                    //layer.prompt({
+                    //    formType: 2
+                    //    , value: data.email
+                    //}, function (value, index) {
+                    //    obj.update({
+                    //        email: value
+                    //    });
+                    //    layer.close(index);
+                    //});
+                    //console.log(data.id);
+                    
+                }
+            });
+
+        });
+
+        var $ = layui.$, active = {
+            reload: function () {
+                var demoReload = $('#demoReload');
+
+                //执行重载
+                hd.reload({
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        name: $('#demoReload').val()
+                    }
+                });
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        function add() {
+            layer.open({
+                type: 2,
+                area: ['800px','600px'],
+                content: '/backstage/add'
+            });
+        }
+</script>
+
