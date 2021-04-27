@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/layui/layui.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <title>提现</title>
+</head>
+<body>
+    <div style="height:30px;">
+        <span style="font-size:20px;">￥</span><input type="text" style="border:none;height:35px;font-size:24px;" id="money" /><br />
+        <span>账户余额</span><text>123456</text><a onclick="" style="color:dodgerblue;margin-left:120px;">全部提现</a><br />
+        <button style="margin-left:60px;margin-top:20px;" class="layui-btn layui-btn-normal">提 现</button>
+    </div>
+    <script>
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '请输入支付密码',
+            btn: ['确定', '取消'], //按钮，
+            btnAlign: 'c'
+        }, function (value, index)
+        {
+            layer.close(index);
+        });
+    </script>
+</body>
+</html>

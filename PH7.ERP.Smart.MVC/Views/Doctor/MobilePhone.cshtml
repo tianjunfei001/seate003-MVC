@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "MobilePhone";
+    Layout = "~/Views/Shared/Doctor_Layout.cshtml";
+    <script src="~/layui/layui.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+}
+
+<h2>您的银行预留手机号</h2>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">预留手机号:</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">验证码:</label>
+        <div style="display:flex;">
+            <div class="layui-input-inline">
+                <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+            <div>
+                <button type="button" class="layui-btn layui-btn-normal">验证码</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">下一步</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+
+    layui.use('form', function () {
+        var form = layui.form
+            , layer = layui.layer
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data)), {
+                title: '成功'
+            }
+            return false;
+        });
+
+    });
+</script>
+
+

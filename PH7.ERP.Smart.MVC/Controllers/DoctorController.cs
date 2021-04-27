@@ -128,5 +128,34 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
+
+
+        //----------------钱包
+        //我的钱包界面
+        public IActionResult DoctorWallet()
+        {
+            return View();
+        }
+        //钱包绑卡界面
+        public IActionResult TiedCard()
+        {
+            return View();
+        }
+        //手机预留页面
+        public IActionResult MobilePhone()
+        {
+            return View();
+        }
+        //提现选卡页面
+        public IActionResult SelectBankCard()
+        {
+            return View();
+        }
+        //提现金额界面
+        public IActionResult WithdrawDeposit()
+        {
+            return View();
+        }
+
     }
 }
