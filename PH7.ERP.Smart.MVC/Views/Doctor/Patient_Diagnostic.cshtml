@@ -6,12 +6,22 @@
 
 <div>
     @*数据表格的重载*@
-<div class="demoTable" style="margin-left: 1400px; margin-top:20px;">
-    <div class="layui-inline">
-        <input placeholder="输入患者" class="layui-input" name="id" id="demoReload" autocomplete="off">
+    <div class="demoTable" style="margin-left: 1400px; margin-top:20px;">
+        @*<div class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">中文版</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="test1" name="id" placeholder="yyyy-MM-dd">
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        @*<div class="layui-inline">
+            <input placeholder="输入患者" class="layui-input" id="demoReload"  autocomplete="off">
+        </div>*@
+        @*<button class="layui-btn" data-type="reload">搜索</button>*@
     </div>
-    <button class="layui-btn" data-type="reload">搜索</button>
-</div>
 
 @*诊断管理列表*@
 <div style="margin-left: 0px;">
@@ -55,7 +65,7 @@
                         , area: ['500px', '350px']
                         , shade: 0
                         , maxmin: true
-                        , content: '/Patient/Patient_Backfill?id=' + data.id
+                        , content: '/Doctor/Patient_Acclaimss?tim='+data.tim
                         , btn: ['返回'] //只是为了演示
 
                     });
@@ -66,11 +76,20 @@
                 }
             });
 
+            layui.use('laydate', function () {
+                var laydate = layui.laydate;
+
+                //常规用法
+                laydate.render({
+                    elem: '#test1'
+                });
+
+            });
 
             //数据表格的重载
             var $ = layui.$, active = {
                 reload: function () {
-                    var demoReload = $('#demoReload');
+                    var demoReload = $('#test1');
 
                     //执行重载
                     hd.reload({
@@ -78,7 +97,7 @@
                             curr: 1 //重新从第 1 页开始
                         }
                         , where: {
-                            name: $("#demoReload").val()
+                            name: $("#test1").val()
                         }
                     });
                 }
@@ -90,4 +109,6 @@
             });
 
         });
+
+
 </script>

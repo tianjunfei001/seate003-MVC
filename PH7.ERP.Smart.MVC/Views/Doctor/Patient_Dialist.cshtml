@@ -42,8 +42,10 @@
             , cols: [[ //表头
                 { field: 'id', title: 'ID', fixed: 'left', align: 'center' }
                 , { field: 'createtime', title: '日期', align: 'center' }
-                , { field: '_money', title: '总金额', align: 'center' }
-                , { field: 'name', title: '患者数量', align: 'center' }
+                , { field: '_money', title: '金额', align: 'center' }
+                , { field: 'name', title: '患者姓名', align: 'center' }
+                , { field: 'describe', title: '病情描述', align: 'center' }
+                , { field: 'age', title: '年龄', align: 'center' }
                 , { fixed: 'right', title: '操作',width: 150, align: 'center', toolbar: '#barDemo' }
 
             ]]
@@ -60,18 +62,19 @@
                     , area: ['500px', '350px']
                     , shade: 0
                     , maxmin: true
-                    , content: '/Patient/Patient_Backfill?id=' + data.id
+                    , content: '/Doctor/Patient_Backfill?id=' + data.id
                     , btn: ['返回'] //只是为了演示
 
                 });
             } else if (layEvent === 'pin') {
+                console.log(data);
                 layer.open({
                     type: 2 //此处以iframe举例
                     , title: '评价'
                     , area: ['500px', '350px']
                     , shade: 0
                     , maxmin: true
-                    , content: '/Patient/Patient_Gdnum?id=' + data.id
+                    , content: '/Doctor/Patient_Acclaim/?id='+data.id 
                     , btn: ['返回'] //只是为了演示
 
                 });

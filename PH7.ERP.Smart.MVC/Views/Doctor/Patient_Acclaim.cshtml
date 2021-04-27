@@ -1,0 +1,77 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Patient_Acclaim</title>
+
+    <script src="~/vue/vue.js"></script>
+    <script src="~/vue/axios.min.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.js"></script>
+</head>
+<body>
+    <div id="app">
+        <hr class="bg-primary">
+        <table class="table table-bordered" style="width:500px;height:100px;margin-top:100px;">
+            <tr>
+                <td>病情描述</td>
+                <td>评价</td>
+                <td>星评</td>
+            </tr>
+            <tr>
+                <td><span>{{list.describe}}</span></td>
+                <td>对医生很满意</td>
+                <td><div id="test">{{list.evaluate}}</div></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+<script>
+    var id = location.href.split('=')[1];
+    console.log(id);
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            UserInfo: {
+                id: id,
+                createtime: "",
+                name: "",
+                describe: "",
+                evaluate:0
+            },
+            list: ""
+        },
+        mounted() {
+            axios.get("http://localhost:49721/api/DoctorLog/GetAcclim?id=" + id)
+                .then(msg => (
+                    this.list = msg.data.data,
+                    console.log(msg.data.data.evaluate),
+                    localStorage.setItem("evaluate", msg.data.data.evaluate)
+
+                ))
+
+                .catch(error => { console.log(error); })
+        }
+    })
+
+    layui.use(['rate'], function () {
+        var rate = layui.rate;
+
+        var eva = localStorage.getItem("evaluate");
+
+        //只读
+        rate.render({
+            elem: '#test'
+            , value: eva
+            , readonly: true
+        });
+    });
+</script>

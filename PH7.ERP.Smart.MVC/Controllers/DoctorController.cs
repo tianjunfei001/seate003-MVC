@@ -14,6 +14,7 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
+        //----------------------tjf
         //医生端账户密码登录页面
         public IActionResult DoctorLogShow()
         {
@@ -46,14 +47,7 @@ namespace PH7.ERP.Smart.MVC.Controllers
         }
         //----------------------------------------------
 
-        /// <summary>
-        /// 接诊台视图  --站台
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Platform()
-        {
-            return View();
-        }
+       
 
         /// <summary>
         /// 接诊台，接诊管理;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -65,11 +59,6 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
-        //未接诊页点击接诊
-        public IActionResult Patient_Treat()
-        {
-            return View();
-        }
         //患者诊断 已接诊
         public IActionResult Patient_Adminyes()
         {
@@ -95,12 +84,31 @@ namespace PH7.ERP.Smart.MVC.Controllers
         }
 
         //评价
-        public IActionResult Patient_Gdnum()
+        public IActionResult Patient_Acclaim()
         {
             return View();
         }
 
-       // -----------------------------sunyaooqi
+        //评价多表
+        public IActionResult Patient_Acclaimss()
+        {
+            return View();
+        }
+
+        //接诊改
+        public IActionResult Patient_Treat()
+        {
+            return View();
+        }
+
+
+
+
+
+
+
+
+        // -----------------------------sunyaooqi
 
         //
         /// <summary>
@@ -128,9 +136,18 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 接诊台视图  --站台
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Platform()
+        {
+            return View();
+        }
 
 
-        //----------------钱包
+
+        //----------------钱包   caj
         //我的钱包界面
         public IActionResult DoctorWallet()
         {

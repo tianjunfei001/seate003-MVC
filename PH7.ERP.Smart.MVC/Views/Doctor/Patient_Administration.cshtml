@@ -6,9 +6,9 @@
 
 <div>
     @*数据表格的重载*@
-    <div class="demoTable" style="margin-left: 950px; margin-top:20px;">
+    <div class="demoTable" style="margin-left: 1425px; margin-top:0px;">
         <div class="layui-inline">
-            <input placeholder="搜索ID" class="layui-input" name="id" id="demoReload" autocomplete="off">
+            <input placeholder="搜索患者" class="layui-input" name="id" id="demoReload" autocomplete="off">
         </div>
         <button class="layui-btn" data-type="reload">搜索</button>
     </div>
@@ -66,7 +66,7 @@
                     , area: ['500px', '350px']
                     , shade: 0
                     , maxmin: true
-                    , content: '/Doctor/Patient_Treat?id='
+                    , content: '/Doctor/Patient_Treat?id=' + data.id
                     , btn: ['返回'] //只是为了演示
 
                 });
