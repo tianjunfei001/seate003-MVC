@@ -28,5 +28,10 @@ namespace PH7.ERP.Smart.MVC.Controllers
         {
             return View();
         }
+        //账号患者修改
+        public IActionResult Upd()
+        {
+            return View();
+        }
     }
 }

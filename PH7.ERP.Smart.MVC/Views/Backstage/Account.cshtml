@@ -50,8 +50,9 @@
             hd = table.render({
                 elem: '#demo'
                 , height: 312
-                , url: 'http://localhost:49721/api/Backstage/GetShowDoctorList?page=1&limit=2' //数据接口
+                , url: 'http://localhost:49721/api/Backstage/GetShowDoctorList' //数据接口
                 , page: true //开启分页
+                ,limit:3
                 , cols: [[ //表头
                     { field: 'id', title: '序号', fixed: 'left', align: 'center' }
                     , { field: 'id', title: 'ID', align: 'center' }
@@ -89,7 +90,12 @@
 
                         layer.close(index);
                     });
-                } else if (obj.event === 'edit') {
+                } else if (obj.event === 'edit') {                   
+                        layer.open({
+                            type: 2,
+                            area: ['800px', '600px'],
+                            content: '/backstage/add?id=' + data.id
+                        });
                     //layer.prompt({
                     //    formType: 2
                     //    , value: data.email
@@ -99,7 +105,8 @@
                     //    });
                     //    layer.close(index);
                     //});
-                    console.log(data.id);
+                    //console.log(data.id);
+                    
                 }
             });
 
