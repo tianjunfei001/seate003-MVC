@@ -1,17 +1,16 @@
 ﻿
 @{
     ViewData["Title"] = "DoctorWallet";
+    ViewData["sizeTitle"] = "我的钱包";
+    ViewData["name"] = "姓名可更改！";
     Layout = "~/Views/Shared/Doctor_Layout.cshtml";
     <script src="~/lib/jquery/dist/jquery.js"></script>
 }
 
-<div>
-    <text style="color:gainsboro">我的钱包</text><br />
-    <hr style="background-color:deepskyblue;" />
-</div>
+
 <div style="height:45px;width:auto;background-color:gainsboro">
     <text style="font-size:18px;">我的余额:</text><text style="color:orange;font-size:24px">￥<span id="myyv"></span></text>
-    <button style="width:60px;height:30px;margin-left:200px;" onclick="location.href='/Doctor/SelectBankCard'">提现</button><button  style="width:60px;height:30px;" onclick="location.href='/Doctor/TiedCard'">未绑卡</button>
+    <button style="width:60px;height:30px;margin-left:200px;" onclick="location.href='/Doctor/SelectBankCard'">提现</button><button style="width:60px;height:30px;" onclick="location.href='/Doctor/TiedCard'">未绑卡</button>
 </div>
 <div style="display:flex; flex-wrap:wrap; height:40px; margin-top:10px;background-color:rgb(248,250,255)">
     <div style="line-height:40px;display:flex;">
@@ -43,7 +42,7 @@
 
         table.render({
             elem: '#test'
-            , url: 'http://localhost:49721/api/DoctorLog/GetDoctor_detailed?Doctor_ID='+id
+            , url: 'http://localhost:49721/api/DoctorLog/GetDoctor_detailed?Doctor_ID=' + id
             , height: 420
             , async: false
             , cols: [[
@@ -56,11 +55,10 @@
         });
     });
     $.ajax({
-        url: 'http://localhost:49721/api/DoctorLog/Getbalance?Doctor_ID='+id,
+        url: 'http://localhost:49721/api/DoctorLog/Getbalance?Doctor_ID=' + id,
         type: 'get',
         async: false,
-        success: function (res)
-        {
+        success: function (res) {
             console.log(res.data);
             $("#myyv").text((res.data));
         }
