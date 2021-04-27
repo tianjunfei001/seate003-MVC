@@ -145,6 +145,22 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 医生端诊断管理视图  --接诊金额
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ReceptionAmount()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 医生端诊断管理查看视图  --诊断详情
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult DiagnosticDetails()
+        {
+            return View();
+        }
 
 
         //----------------钱包   caj
