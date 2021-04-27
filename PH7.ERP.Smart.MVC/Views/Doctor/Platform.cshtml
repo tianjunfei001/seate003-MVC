@@ -17,6 +17,7 @@
             }
         </style>*@
         <div id="app">
+            <el-button @@click="GR"> 个人信息</el-button>
             <template>
                 <template>
                     <el-button @@click="JieZhen"> 未接诊(20)</el-button>
@@ -78,7 +79,7 @@
                                             <el-col :span="8"> <div class="grid-content bg-purple"> 患者姓名:</div> </el-col>
                                             <el-col :span="4">
                                                 <div class="grid-content bg-purple">
-                                                  {{scope.row.name}}
+                                                    {{scope.row.name}}
                                                 </div>
                                             </el-col>
                                         </el-row>
@@ -323,12 +324,12 @@
 
             @*<div v-for="item in ren" > {
 
-                {
-                    item .name
-                }
+        {
+            item .name
+        }
 
-                }
-                </div > *@
+        }
+        </div > *@
         </div>
     </div>
 </div>
@@ -385,6 +386,10 @@
                     this.Pan = true;
                 }
             },
+            GR()
+            {
+                location.href = "/Doctor/GetInformation";
+            }
         },
         mounted() {
             this.Initda();

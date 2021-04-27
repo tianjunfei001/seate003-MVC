@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewData["Title"] = "GetInformation";
+    ViewData["sizeTitle"] = "小标题可以更改！";
+    ViewData["name"] = "姓名可更改！";
+
+
+    Layout = "~/Views/Shared/Doctor_Layout.cshtml";
+}
+
+<style>
+    .el-col {
+        border-radius: 4px;
+    }
+
+    .bg-purple {
+        padding: 20px;
+    }
+</style>
+<div id="app">
+    <template style="background-color:azure">
+        <template>
+            <el-button>个人信息</el-button>
+            <el-button @@click="mima">密码设置</el-button>
+        </template>
+        <el-row>
+            <el-col :span="12">
+                <div class="grid-content bg-purple">
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">用户名:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{tableData.userName}}</div></el-col>
+                    </el-row>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{tableData.cellPhone}}</div></el-col>
+                    </el-row>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">我的头像:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple"><img style="height:70px;width:70px" src="/img/u=1897891542,975841375&fm=26&gp=0.jpg" /></div></el-col>
+                    </el-row>
+                    <el-button type="primary" plain @@click="Gai">编辑</el-button>
+                </div>
+            </el-col>
+            <el-col :span="12">
+                <div class="grid-content bg-purple-light">
+                    <span>医师个人资料/不可修改</span>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">医师姓名:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{Biaodata.name}}</div></el-col>
+                    </el-row>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">隶属医院:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{Biaodata.hospitalName}}</div></el-col>
+                    </el-row>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">医师职称:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{Biaodata.grade_name}}</div></el-col>
+                    </el-row>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">从医年限:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{Biaodata.years}}</div></el-col>
+                    </el-row>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">联系电话:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{Biaodata.cellPhone}}</div></el-col>
+                    </el-row>
+                    <el-row :gutter="12">
+                        <el-col :span="6"><div class="grid-content bg-purple">身份证号:</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">{{Biaodata._identity}}</div></el-col>
+                    </el-row>
+
+                    <div>
+                        <div style="float:left;margin-right:50px">
+                            <span>身份证正面上传</span>
+                            <br />
+                            <img style="height:125px;width:125px" src="/img/sfz.jpg" />
+                        </div>
+                        <div style="float:left;margin-right:50px">
+                            <span>医师执业证书上传</span>
+                            <br />
+                            <img style="height:125px;width:125px" src="/img/zhengshu.jpg"/>
+                        </div>
+                        <div>
+                            <span>医师资格证书上传</span>
+                            <br />
+                            <img style="height:125px;width:125px" src="/img/zh.jpg" />
+                        </div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </template>
+
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: '',
+            Biaodata:[],
+            pageindex: 1,
+            pagesize: 3,
+            count: 7,
+            yong: '',
+            ttt: '',
+            numberValidateForm: {
+                name: '',
+                Department_ID: '',
+            }
+        },
+        methods: {
+            Initda: function () {
+                axios.get("http://localhost:49721/api/DoctorLog/GetPersonal").then(res => {
+                    console.log(res);
+                    console.log(res.data.data);
+                   
+
+                    this.Biaodata = res.data.data[2];
+                    console.log(this.Biaodata);
+                    this.tableData = JSON.parse(localStorage.getItem("userinfo"));
+                    //console.log(this.tableData.name);
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+            mima() {
+                location.href = "/Doctor/Ciphermap";
+            },
+            Gai()
+            {
+                location.href = "/Doctor/GetUserPassword";
+            }
+        },
+        mounted() {
+            this.Initda();
+            console.log(JSON.parse(localStorage.getItem("userinfo")));
+        },
+    })
+
+</script>
+

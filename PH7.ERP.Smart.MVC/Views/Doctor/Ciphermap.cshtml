@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewData["Title"] = "Ciphermap";
+    Layout = "~/Views/Shared/Doctor_Layout.cshtml";
+}
+
+<h1>Ciphermap</h1>
+
+<div id="app">
+    <div>
+        <template>
+            <el-button @@click="GeRen">个人信息</el-button>
+            <el-button>密码设置</el-button>
+        </template>
+        <template>
+            <el-form :data="ruleForm" status-icon label-width="100px" class="demo-ruleForm">
+                <el-form-item label="旧密码">
+                    <el-input type="password" v-model="ruleForm.pass"></el-input>
+                </el-form-item>
+                <el-form-item label="新密码">
+                    <el-input type="password" v-model="ruleForm.checkPass"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码">
+                    <el-input v-model="ruleForm.age"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @@click="submitForm">完成</el-button>
+                </el-form-item>
+            </el-form>
+
+        </template>
+
+    </div>
+</div>
+<script>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: [],
+            ruleForm: {
+                pass: '',
+                checkPass: '',
+                age: ''
+            },
+
+        },
+        methods: {
+            submitForm() {
+                //console.log(this.ruleForm.pass);
+                //console.log(this.ruleForm.checkPass);
+                //console.log(this.ruleForm.age);
+                //console.log(this.tableData.id);
+                //console.log(this.tableData);
+             
+                if (this.ruleForm.pass != this.tableData._password) {
+                    alert("旧密码输入错误");
+                    return;
+                }
+                if (this.ruleForm.age != this.ruleForm.checkPass) {
+                    alert("密码输入的不相同，请重新输入！！！");
+                    return;
+                }
+                axios.get("http://localhost:49721/api/DoctorLog/GetPassword?Mima=" + this.ruleForm.checkPass + "&number=" + this.tableData.id).then(res => {
+                    console.log(res);
+                    alert(res.data.data);
+                    //if (res.data._list) {
+                    //    location.href = "/Medical/Index";
+                    //}
+
+                }).catch(error => {
+                    console.log(error);
+
+                })
+
+            },
+            GeRen()
+            {
+                location.href = "/Doctor/GetInformation";
+            }
+
+        },
+        mounted() {
+            console.log(JSON.parse(localStorage.getItem("userinfo")));
+            this.tableData = JSON.parse(localStorage.getItem("userinfo"));
+        },
+    });
+
+</script>

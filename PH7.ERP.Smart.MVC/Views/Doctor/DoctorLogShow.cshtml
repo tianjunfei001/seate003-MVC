@@ -35,28 +35,22 @@
 </html>
 <script>
     function Log() {
-        var data = {};
-        data.userName = $("#txtname").val();
-        data._password = $("#txtpass").val();
-        if (data.userName.length < 0 || data._password.length < 0) {
+      
+
+        if ($("#txtname").val().length < 0 || $("#txtpass").val().length < 0) {
             alert("不能为空");
+            return;
         }
         $.ajax({
-            url: 'http://localhost:49721/api/DoctorLog/GetDoctLog',
-            type: 'post',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType:'application/json',
+            url: 'http://localhost:49721/api/DoctorLog/GetDoctLog?userName=' + $("#txtname").val() + "&password=" + $("#txtpass").val(),
+            type: 'get',
             success: function (d) {
                 console.log(d);
-                if (d.seate>=1) {
-                    alert("登录成功");
-                    //location.href = '/Usere/Index';
+                localStorage.setItem("userinfo", JSON.stringify(d.data));
+                alert(d.msg);
+                if (d._list) {
+                    location.href = "/Doctor/Platform";
                 }
-                else {
-                    alert("登录失败");
-                }
-
 
             }
         })

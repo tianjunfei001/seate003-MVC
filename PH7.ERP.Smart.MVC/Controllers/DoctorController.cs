@@ -99,5 +99,34 @@ namespace PH7.ERP.Smart.MVC.Controllers
         {
             return View();
         }
+
+       // -----------------------------sunyaooqi
+
+        //
+        /// <summary>
+        /// 医生端个人信息视图  --信息
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GetInformation()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 医生端修改密码信息视图  --密码图
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Ciphermap()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 医生端修改用户密码信息视图  --用户密码
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GetUserPassword()
+        {
+            return View();
+        }
+
     }
 }
