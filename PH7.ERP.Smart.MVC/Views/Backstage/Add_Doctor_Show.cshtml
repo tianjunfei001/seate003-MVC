@@ -1,0 +1,339 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add_Doctor_Show</title>
+    <script src="~/layui/layui.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+</head>
+<body>
+    <form class="layui-form" action="" lay-filter="example" enctype="multipart/form-data">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">医生账户</label>
+            <div class="layui-input-block">
+                <input type="text" name="userName" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">医生姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="Name" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">隶属医院</label>
+            <div class="layui-input-block">
+                <select name="yi" id="yi" lay-filter="yi">
+                    <option value=""></option>
+                    <option value="0">写作</option>
+                    <option value="1">阅读</option>
+                    <option value="2">游戏</option>
+                    <option value="3">音乐</option>
+                    <option value="4">旅行</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" id="yi">隶属科室</label>
+            <div class="layui-input-block">
+                <select name="ke" id="ke" lay-filter="ke">
+                    <option value="-1">请选择医院</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">医生等级</label>
+            <div class="layui-input-block">
+                <select name="deng" id="deng" lay-filter="deng">
+                    <option value="-1">请选择等级</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-block">
+                <input type="text" name="cellPhone" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="_password" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">医生资格证上传</label>
+            <div class="layui-input-block">
+                <input type="file" id="zhengshu" name="_certificate">
+                <img src="#" id="zheng" style="height:50px; width:auto;" alt="请先选择" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证</label>
+            <div class="layui-input-block">
+                <input type="file" id="shengfen" name="shen">
+                <img src="#" id="shen" style="height:50px; width:auto;" alt="请先选择" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">医生执业证书</label>
+            <div class="layui-input-block">
+                <input type="file" id="zhiye" name="zhiye">
+                <img src="#" id="zhi" style="height:50px; width:auto;" alt="请先选择" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="reset" class="layui-btn layui-btn-normal" id="LAY-component-form-setval">重置</button>
+                <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-getval">提交</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+            var $ = layui.$;
+
+
+
+            //绑定医院下拉
+            jQuery.ajax({
+                url: "http://localhost:49721/api/Backstage/GetHost",
+                type: "get",
+                async: false,
+                success: function (res) {
+                    console.log(res);
+                    $("#yi").empty();
+                    $("#yi").append("<option value='-1'>请选择</option>")
+
+                    $.each(res.data, function (i, v) {
+                        $("#yi").append("<option value=" + v.id + ">" + v.hospitalName + "</option>")
+                    })
+                    form.render("select");
+                }
+
+            })
+            jQuery.ajax({
+                url: "http://localhost:49721/api/Backstage/GetDepartment?hospital_Id=-1",
+                type: "get",
+                async: false,
+                success: function (res) {
+                    console.log(res);
+                    $("#ke").empty();
+                    $("#ke").append("<option value='-1'>请先选择医院</option>")
+                    $.each(res.data, function (i, v) {
+                        $("#ke").append("<option value=" + v.id + ">" + v.name + "</option>")
+                    })
+                    form.render("select");
+                }
+
+            })
+            jQuery.ajax({
+                url: "http://localhost:49721/api/Backstage/GetGrade?Department_Id=-1",
+                type: "get",
+                async: false,
+                success: function (res) {
+                    console.log(res);
+                    $("#deng").empty();
+                    $("#deng").append("<option value='-1'>请先选择科室</option>")
+                    $.each(res.data, function (i, v) {
+                        $("#deng").append("<option value=" + v.id + ">" + v.name + "</option>")
+                    })
+                    form.render("select");
+                }
+
+            })
+            //联动
+            form.on('select(yi)', function (data) {
+                console.log(data.elem); //得到select原始DOM对象
+                console.log(data.value); //得到被选中的值
+                console.log(data.othis); //得到美化后的DOM对象
+                $("#ke").empty();
+                $("#deng").empty();
+                jQuery.ajax({
+                    url: "http://localhost:49721/api/Backstage/GetDepartment?hospital_Id=" + data.value,
+                    type: "get",
+                    async: false,
+                    success: function (res) {
+                        console.log(res);
+                        $("#ke").empty();
+                        $.each(res.data, function (i, v) {
+                            $("#ke").append("<option value=" + v.id + ">" + v.name + "</option>")
+                        })
+                        form.render("select");
+                    }
+
+                })
+            });
+
+            form.on('select(ke)', function (data) {
+                console.log(data.elem); //得到select原始DOM对象
+                console.log(data.value); //得到被选中的值
+                console.log(data.othis); //得到美化后的DOM对象
+                jQuery.ajax({
+                    url: "http://localhost:49721/api/Backstage/GetGrade?Department_Id=" + data.value,
+                    type: "get",
+                    async: false,
+                    success: function (res) {
+                        console.log(res);
+                        $("#deng").empty();
+                        $.each(res.data, function (i, v) {
+                            $("#deng").append("<option value=" + v.id + ">" + v.name + "</option>")
+                        })
+                        form.render("select");
+                    }
+
+                })
+            });
+            var da = new FormData();
+
+            //自定义验证规则
+            form.verify({
+                title: function (value) {
+                    if (value.length < 5) {
+                        return '标题至少得5个字符啊';
+                    }
+                }
+                , pass: [
+                    /^[\S]{6,12}$/
+                    , '密码必须6到12位，且不能出现空格'
+                ]
+                , content: function (value) {
+                    layedit.sync(editIndex);
+                }
+            });
+
+
+            //反填
+            var id = location.href.split('=')[1];
+            console.log(id);
+            if (id != "undefined" && id != null) {
+
+                jQuery.ajax({
+                    url: "http://localhost:49721/api/Backstage/GetFanDoctorLog?id=" + id,
+                    type: "get",
+                    success: function (res) {
+                        console.log(res);
+                        //赋值
+                        form.val('example', {
+                            "userName": res.data.userName
+                            , "cellPhone": res.data.cellPhone
+                            , "Name": res.data.name
+                            , "yi": res.data.hospital_Id 
+                            , "ke": res.data.department_Id 
+                            , "deng": res.data.grade_Id
+                            , "_password": res.data._password
+                        });
+                        //
+                        $("#zheng").prop("src", "http://localhost:49721/" + res.data._certificate);
+                        $("#shen").prop("src", "http://localhost:49721/" + res.data.identity_img);
+                        $("#zhi").prop("src", "http://localhost:49721/" + res.data.practice_img);
+                        //da.append("")//原路径
+                        da.append("_certificate2",res.data._certificate);
+                        da.append("identity_img2",res.data.identity_img);
+                        da.append("Practice_img2",res.data.practice_img);
+                    }
+                })
+
+
+
+            }
+
+           
+
+            //表单取值
+            layui.$('#LAY-component-form-getval').on('click', function () {
+                var data = form.val('example');
+                //alert(JSON.stringify(data));
+                console.log(data);
+                
+                
+                if (id != "undefined" && id != null) {
+                    da.append("id", id);
+                }
+                da.append("userName", data.userName);
+                da.append("Name", data.Name);
+                da.append("cellPhone", data.cellPhone);
+                da.append("Grade_Id", data.deng);
+                da.append("Department_Id", data.ke);
+                da.append("hospital_Id", data.yi);
+                da.append("_password", data._password);
+                da.append("_certificate", $("#zhengshu")[0].files[0]);
+                da.append("identity_img", $("#shengfen")[0].files[0]);
+                da.append("Practice_img", $("#zhiye")[0].files[0]);
+                //ajax
+                jQuery.ajax({
+                    url: "http://localhost:49721/api/Backstage/GetAddDoctorLog",
+                    type: "post", 
+                    data: da,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        console.log(res);                     
+                            alert(res.msg);
+                            //刷新父页面
+                            window.parent.location.reload();
+                            //关闭弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        
+                    }
+
+                })
+
+            });
+
+
+            //上传图片  change 事件
+            $("#zhengshu").on("change", function () {
+                var files = $("#zhengshu")[0].files;
+                var paht = URL.createObjectURL(files[0]);
+                $("#zheng").prop("src", paht);
+
+            })
+            //上传图片  change 事件
+            $("#shengfen").on("change", function () {
+
+                var files = $("#shengfen")[0].files;
+                var paht = URL.createObjectURL(files[0]);
+                $("#shen").prop("src", paht);
+
+            })
+            //上传图片  change 事件
+            $("#zhiye").on("change", function () {
+
+                var files = $("#zhiye")[0].files;
+                var paht = URL.createObjectURL(files[0]);
+                $("#zhi").prop("src", paht);
+
+            })
+
+
+        });
+
+
+
+    </script>
+
+
+
+
+</body>
+</html>

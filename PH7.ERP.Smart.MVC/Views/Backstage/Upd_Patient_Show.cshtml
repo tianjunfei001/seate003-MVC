@@ -1,0 +1,147 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Upd_Patient_Show</title>
+    <script src="~/layui/layui.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+</head>
+<body>
+    <form class="layui-form" action="" lay-filter="example" enctype="multipart/form-data">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">患者账户</label>
+            <div class="layui-input-block">
+                <input type="text" name="userName" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>    
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-block">
+                <input type="text" name="_phone" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="_password" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+      
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="reset" class="layui-btn layui-btn-normal" id="LAY-component-form-setval">重置</button>
+                <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-getval">提交</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+            var $ = layui.$;
+
+
+
+
+            
+
+            //自定义验证规则
+            form.verify({
+                title: function (value) {
+                    if (value.length < 5) {
+                        return '标题至少得5个字符啊';
+                    }
+                }
+                , pass: [
+                    /^[\S]{6,12}$/
+                    , '密码必须6到12位，且不能出现空格'
+                ]
+                , content: function (value) {
+                    layedit.sync(editIndex);
+                }
+            });
+
+
+            //反填
+            var id = location.href.split('=')[1];
+            console.log(id);
+            if (id != "undefined" && id != null) {
+
+                jQuery.ajax({
+                    url: "http://localhost:49721/api/Backstage/GetFanPatient_List?id=" + id,
+                    type: "get",
+                    success: function (res) {
+                        console.log(res);
+                        //赋值
+                        form.val('example', {
+                            "userName": res.data.userName
+                            , "_phone": res.data._phone
+                            , "_password": res.data._password
+                        });
+                    }
+                })
+
+
+
+            }
+
+
+
+            //表单取值
+            layui.$('#LAY-component-form-getval').on('click', function () {
+                var data = form.val('example');
+                //alert(JSON.stringify(data));
+                data.id = id;
+                console.log(data);
+
+
+              
+                //ajax
+                jQuery.ajax({
+                    url: "http://localhost:49721/api/Backstage/GetUpdPatient_List",
+                    type: "post",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    dataType:"json",
+                    success: function (res) {
+                        console.log(res);
+                            alert(res.msg);
+                            //刷新父页面
+                            window.parent.location.reload();
+                            //关闭弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+
+                    }
+
+                })
+
+            });
+
+
+
+        });
+
+
+
+    </script>
+
+
+
+
+</body>
+</html>
+

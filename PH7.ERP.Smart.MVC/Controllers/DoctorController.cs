@@ -162,6 +162,30 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
+        //----------------直播管理  tjf
+        public IActionResult DoctorLive_TV()
+        {
+            return View();
+        }
+
+
+
+
+        public IActionResult Gdd()
+        {
+            return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         //----------------钱包   caj
         //我的钱包界面
@@ -189,6 +213,8 @@ namespace PH7.ERP.Smart.MVC.Controllers
         {
             return View();
         }
+
+
 
     }
 }

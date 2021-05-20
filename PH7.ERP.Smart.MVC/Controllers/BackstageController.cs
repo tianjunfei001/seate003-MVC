@@ -129,6 +129,23 @@ namespace PH7.ERP.Smart.MVC.Controllers
             return View();
         }
 
+        //---------------------------------- 账户管理 tianjunfei
+        public IActionResult Doctor_Show()
+        {
+            return View();
+        }
+
+        //医生账户添加
+        public IActionResult Add_Doctor_Show()
+        {
+            return View();
+        }
+
+        //医生账户添加
+        public IActionResult Upd_Patient_Show()
+        {
+            return View();
+        }
 
 
 

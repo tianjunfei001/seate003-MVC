@@ -1,0 +1,272 @@
+﻿
+@{
+    ViewData["Title"] = "Doctor_Show";
+    Layout = "~/Views/Shared/backstage_Layout.cshtml";
+}
+
+<h1>Doctor_Show</h1>
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">医生</li>
+        <li>患者</li>
+    </ul>
+    <div class="layui-tab-content">
+        @*医生管理*@
+        <div class="layui-tab-item layui-show">
+            <div class="demoTable">
+                搜索姓名：
+                <div class="layui-inline">
+                    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                </div>
+                <button class="layui-btn" id="sou1">搜索</button>
+            </div>
+
+            <table class="layui-hide" id="test" lay-filter="test"></table>
+
+
+            <script type="text/html" id="toolbarDemo">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData1">添加</button>      
+                </div>
+            </script>
+
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+
+
+
+
+        </div>
+        <div class="layui-tab-item">
+
+            <div class="demoTable">
+                搜索姓名：
+                <div class="layui-inline">
+                    <input class="layui-input" name="id" id="demoReload2" autocomplete="off">
+                </div>
+                <button class="layui-btn" data-type="reload" id="sou2">搜索</button>
+            </div>
+
+            <table class="layui-hide" id="test2" lay-filter="test2"></table>
+
+
+            
+
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.use('table', function () {
+        var table = layui.table;
+        var $ = layui.$;
+        //医生
+        table.render({
+            elem: '#test'
+            , url: 'http://localhost:49721/api/Backstage/GetDoctorLogList'
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示'
+                , layEvent: 'LAYTABLE_TIPS'
+                , icon: 'layui-icon-tips'
+            }]
+            , title: '用户数据表'
+            , cols: [[
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'xuHao', title: '序号', width: 80, fixed: 'left', unresize: true, sort: true }
+                , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true }
+                , { field: 'name', title: '医师姓名', width: 120, edit: 'text' }
+                , { field: 'hospitalName', title: '隶属医院', width: 120, edit: 'text' }
+                , { field: 'grade_name', title: '医师等级', width: 80, edit: 'text', sort: true }
+                , { field: 'cellPhone', title: '手机号', width: 100 }
+                , { field: '_password', title: '密码' }
+                , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+            ]]
+            , id: 'testReload'
+            , page: true
+        });
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData1':
+                    layer.open({
+                        type: 2,
+                        content: '/Backstage/Add_Doctor_Show', //
+                        area: ['500px', '600px']
+                    }); 
+                    break;            
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    jQuery.ajax({
+                        url: "http://localhost:49721/api/Backstage/GetDelDoctorLog?id=" + obj.data.id,
+                        type: "get",
+                        success: function (res) {
+                            if (res.msg>=1) {
+                                alert("删除成功！");
+                                //执行重载
+                                table.reload('testReload', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    , where: {
+
+                                       
+
+                                    }
+                                });
+                            } else {
+                                alert("删除失败！");
+                            }
+                        }
+                    })
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                console.log(obj.data);
+                layer.open({
+                    type: 2,
+                    content: '/Backstage/Add_Doctor_Show?id=' + obj.data.id, //
+                    area: ['500px', '600px']
+                }); 
+            }
+        });
+
+        //搜素
+        $("#sou1").on('click', function () {
+            var demoReload = $('#demoReload');
+
+            //执行重载
+            table.reload('testReload', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                , where: {
+
+                    name: demoReload.val()
+
+                }
+            });
+        });
+
+
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //------------------------------------------------
+        //患者
+        table.render({
+            elem: '#test2'
+            , url: 'http://localhost:49721/api/Backstage/GetPatient_List'
+            , toolbar: '#toolbarDemo1' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示'
+                , layEvent: 'LAYTABLE_TIPS'
+                , icon: 'layui-icon-tips'
+            }]
+            , title: '用户数据表'
+            , cols: [[
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'xuHao', title: '序号', width: 80, fixed: 'left', unresize: true, sort: true }
+                , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true }
+                , { field: 'userName', title: '患者用户名', width: 120, edit: 'text' }
+                , { field: '_phone', title: '手机号', width: 100 }
+                , { field: '_password', title: '密码' }
+                , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+            ]]
+            , id: 'testReload2'
+            , page: true
+        });
+     
+
+        //监听行工具事件
+        table.on('tool(test2)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    jQuery.ajax({
+                        url: "http://localhost:49721/api/Backstage/GetDelPatient?id=" + obj.data.id,
+                        type: "get",
+                        success: function (res) {
+                            if (res.msg >= 1) {
+                                alert("删除成功！");
+                                //执行重载
+                                table.reload('testReload2', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    , where: {
+
+
+
+                                    }
+                                });
+                            } else {
+                                alert("删除失败！");
+                            }
+                        }
+                    })
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                console.log(obj.data);
+                layer.open({
+                    type: 2,
+                    content: '/Backstage/Upd_Patient_Show?id=' + obj.data.id, //
+                    area: ['500px', '600px']
+                }); 
+            }
+        }); 
+
+        
+        var $ = layui.$, active = {
+            reload: function () {
+                var demoReload = $('#demoReload2');
+
+                //执行重载
+                table.reload('testReload2', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+
+                        name: demoReload.val()
+
+                    }
+                });
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+
+</script>
